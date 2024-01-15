@@ -96,3 +96,28 @@ body {
 .icon:hover{
     opacity: 1.0;
 }
+@media screen and (max-width: 850px){
+    .socials{
+        margin-bottom: 10px;
+    }
+    .upperArea{
+        flex-direction: column;
+        height: auto;
+    }
+    .profileImage{
+        margin-top: 90px;
+        scale: 0.8;
+        margin-bottom: 100px;
+    }
+    .pfpText{
+        font-size: 12px;
+    }
+    .txt1{
+        font-size: 2.4vh;
+        }
+    .waveGif{
+        margin-left: 10px;
+        width: auto;
+        height: 2.4vh;
+    }
+}
