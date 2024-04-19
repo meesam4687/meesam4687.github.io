@@ -63,11 +63,11 @@ body {
 .txt1{
     font-size: 45px;
 }
-.txt1 a{
+.txt1 span{
     color: #7898c3;
     transition-duration: 0.4s
 }
-.txt1 a:hover{
+.txt1 span:hover{
     background-color: #3e4a5a54;
     border-radius: 5px;
     cursor: pointer;
