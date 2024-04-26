@@ -1,57 +1,17 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="I am Meesam, I make random stuff.">
-    <meta property="og:image" content="https://meesam.is-a.dev/assets/images/pfp.png">
-    <meta property="og:title" content="Meesam">
-    <meta property="og:description" content="I am Meesam, I make random stuff.">
-    <meta property="og:url" content="https://meesam.is-a.dev/">
-    <meta property="twitter:image" content="https://meesam.is-a.dev/assets/images/pfp.png">
-    <meta property="twitter:title" content="Meesam">
-    <meta property="twitter:description" content="I am Meesam, I make random stuff.">
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="og:site_name" content="Meesam">
-    <script type="application/ld+json">
-        {
-          "@context" : "https://schema.org",
-          "@type" : "WebSite",
-          "name" : "Meesam",
-          "url" : "https://meesam.is-a.dev/"
-        }
-      </script>
-    
-    <link type="text/css" rel="stylesheet" href="./assets/style.css">
-    <link rel="icon" href="./assets/images/favicon.png">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="./assets/script.js" defer></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
-        rel="stylesheet">
-    <title id="title">I'm Meesam</title>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>I'm Meesam</title>
 </head>
 
 <body>
-    <iframe frameborder="0" class="bg" id="bg" src="https://meesam.is-a.dev/cdn/bg/dist/index.html"></iframe>
-    <div class="upperArea">
-        <div class="profileImage">
-            <p class="pfpText">Shoebill "The W" Stork</p>
-            <img class="pfpimg" src="./assets/images/pfp.png" alt="pfp">
-        </div>
-        <div class="aboutText">
-            <p class="txt1">Hello <img class="waveGif" src="https://em-content.zobj.net/source/noto-emoji-animations/344/waving-hand_light-skin-tone_1f44b-1f3fb_1f3fb.gif"></p>
-            <p class="txt1">I am Meesam</p>
-            <p class="txt1">I make <span href="https://github.com/meesam4687?tab=repositories" onclick="window.open('https://github.com/meesam4687?tab=repositories')">random stuff</span></p>
-        </div>
-    </div>
-    <div class="socials">
-        <img class="icon" src="./assets/images/github.svg" onclick="window.open('https://github.com/meesam4687')">
-        <img class="icon" onclick="window.open('https://discord.com/users/809702164724449290')" src="./assets/images/discord.svg">
-        <img class="icon" src="./assets/images/twitter.svg" onclick="window.open('https://twitter.com/msm4687')">
-    </div>
+  <iframe frameborder="0" class="bg" id="bg" src="https://meesam.is-a.dev/cdn/bg/dist/index.html"></iframe>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
 </body>
 
 </html>
