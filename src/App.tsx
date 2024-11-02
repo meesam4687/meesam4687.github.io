@@ -1,7 +1,6 @@
 import Text from './Text';
 import BirdImage from './Bird';
 import Socials from './Socials';
-import { Analytics } from "@vercel/analytics/react"
 
 function App() {
   return (
@@ -11,7 +10,6 @@ function App() {
         <Text />
       </div>
       <Socials />
-      <Analytics />
     </>
   );
 }
