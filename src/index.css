@@ -11,6 +11,7 @@ body {
     color: white;
     display: flex;
     flex-direction: column;
+    background-color: #00FFFFFF;
 }
 
 .upperArea {
