@@ -1,15 +1,11 @@
-<script>
+<script lang="ts">
 	import bird from '$lib/assets/bird.png';
 	import cookieSvg from '$lib/assets/12materialcookie.svg';
 
 	let copiedDiscord = $state(false);
-	/** @type {any} */
-	let copyTimeout;
+	let copyTimeout: ReturnType<typeof setTimeout> | undefined;
 
-	/**
-	 * @param {MouseEvent} e
-	 */
-	function copyDiscordUsername(e) {
+	function copyDiscordUsername(e: MouseEvent) {
 		e.preventDefault();
 		if (typeof navigator !== 'undefined' && navigator.clipboard) {
 			navigator.clipboard.writeText('meesam4687');

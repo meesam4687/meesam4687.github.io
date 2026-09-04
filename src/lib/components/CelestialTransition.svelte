@@ -1,39 +1,27 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
-	import { theme } from '$lib/theme.svelte.js';
+	import { theme } from '$lib/theme.svelte';
+	import clearDay from '$lib/assets/clear-day.svg';
+	import clearNight from '$lib/assets/clear-night.svg';
+
+	interface CelestialBodyState {
+		type: 'sun' | 'moon';
+		x: number;
+		y: number;
+		scale: number;
+		rotation: number;
+	}
 
 	let active = $state(false);
+	let bodyA = $state<CelestialBodyState | null>(null);
+	let bodyB = $state<CelestialBodyState | null>(null);
+	let animFrame: number | undefined;
 
-	/**
-	 * @typedef {Object} CelestialBodyState
-	 * @property {'sun' | 'moon'} type
-	 * @property {number} x
-	 * @property {number} y
-	 * @property {number} scale
-	 * @property {number} rotation
-	 */
-
-	/** @type {CelestialBodyState | null} */
-	let bodyA = $state(null);
-	/** @type {CelestialBodyState | null} */
-	let bodyB = $state(null);
-
-	/** @type {number | undefined} */
-	let animFrame;
-
-	/**
-	 * @param {number} t
-	 * @returns {number}
-	 */
-	function easeOutCubic(t) {
+	function easeOutCubic(t: number): number {
 		return 1 - Math.pow(1 - t, 3);
 	}
 
-	/**
-	 * @param {number} t
-	 * @returns {number}
-	 */
-	function easeInQuad(t) {
+	function easeInQuad(t: number): number {
 		return t * t;
 	}
 
@@ -43,10 +31,7 @@
 		}
 	});
 
-	/**
-	 * @param {import('$lib/theme.svelte.js').AnimationData} data
-	 */
-	function startCelestialFlight(data) {
+	function startCelestialFlight(data: { from: 'light' | 'dark'; to: 'light' | 'dark'; origin: { x: number; y: number } }) {
 		active = true;
 		const { from, to, origin } = data;
 		const w = window.innerWidth;
@@ -58,7 +43,6 @@
 		const cy = h * 0.75;
 		const radius = Math.hypot(origin.x - cx, origin.y - cy);
 		const dockAngle = Math.atan2(origin.y - cy, origin.x - cx);
-
 		const sweep = 2.2;
 
 		const startTime = performance.now();
@@ -69,22 +53,17 @@
 
 		let hasDepartedOutOfBounds = false;
 
-		/**
-		 * @param {number} now
-		 */
-		function step(now) {
+		function step(now: number) {
 			const elapsed = now - startTime;
 
 			if (!hasDepartedOutOfBounds && elapsed <= departDuration) {
 				const p = Math.min(elapsed / departDuration, 1);
 				const ease = easeInQuad(p);
-				
 				const currentAngle = dockAngle - ease * sweep;
 				const x = cx + radius * Math.cos(currentAngle);
 				const y = cy + radius * Math.sin(currentAngle);
-
 				const scale = 1 + ease * 3.5;
-				const iconSize = 22 * scale;
+				const iconSize = 26 * scale;
 
 				const isOutOfBounds = (
 					x < -iconSize ||
@@ -113,11 +92,9 @@
 			if (elapsed >= arriveStart && elapsed < totalDuration) {
 				const p = Math.min((elapsed - arriveStart) / arriveDuration, 1);
 				const ease = easeOutCubic(p);
-
 				const currentAngle = (dockAngle + sweep) - ease * sweep;
 				const x = cx + radius * Math.cos(currentAngle);
 				const y = cy + radius * Math.sin(currentAngle);
-
 				const scale = 4.5 - ease * 3.5;
 
 				bodyB = {
@@ -159,21 +136,9 @@
 				"
 			>
 				{#if bodyA.type === 'sun'}
-					<svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-						<circle cx="12" cy="12" r="4"></circle>
-						<path d="M12 2v2"></path>
-						<path d="M12 20v2"></path>
-						<path d="m4.93 4.93 1.41 1.41"></path>
-						<path d="m17.66 17.66 1.41 1.41"></path>
-						<path d="M2 12h2"></path>
-						<path d="M20 12h2"></path>
-						<path d="m6.34 17.66-1.41 1.41"></path>
-						<path d="m19.07 4.93-1.41 1.41"></path>
-					</svg>
+					<img src={clearDay} alt="" class="theme-icon sun-icon" />
 				{:else}
-					<svg class="theme-icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
-					</svg>
+					<img src={clearNight} alt="" class="theme-icon moon-icon" />
 				{/if}
 			</div>
 		{/if}
@@ -186,21 +151,9 @@
 				"
 			>
 				{#if bodyB.type === 'sun'}
-					<svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-						<circle cx="12" cy="12" r="4"></circle>
-						<path d="M12 2v2"></path>
-						<path d="M12 20v2"></path>
-						<path d="m4.93 4.93 1.41 1.41"></path>
-						<path d="m17.66 17.66 1.41 1.41"></path>
-						<path d="M2 12h2"></path>
-						<path d="M20 12h2"></path>
-						<path d="m6.34 17.66-1.41 1.41"></path>
-						<path d="m19.07 4.93-1.41 1.41"></path>
-					</svg>
+					<img src={clearDay} alt="" class="theme-icon sun-icon" />
 				{:else}
-					<svg class="theme-icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
-					</svg>
+					<img src={clearNight} alt="" class="theme-icon moon-icon" />
 				{/if}
 			</div>
 		{/if}
@@ -223,8 +176,8 @@
 		position: absolute;
 		top: 0;
 		left: 0;
-		width: 22px;
-		height: 22px;
+		width: 26px;
+		height: 26px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -232,18 +185,10 @@
 	}
 
 	.theme-icon {
-		width: 22px;
-		height: 22px;
-		stroke-width: 2.2;
-	}
-
-	.sun-icon {
-		color: #f59e0b;
-		fill: rgba(245, 158, 11, 0.15);
-	}
-
-	.moon-icon {
-		color: #95b7ed;
-		fill: rgba(149, 183, 237, 0.2);
+		width: 26px;
+		height: 26px;
+		object-fit: contain;
+		display: block;
+		pointer-events: none;
 	}
 </style>

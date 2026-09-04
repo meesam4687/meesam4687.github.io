@@ -1,34 +1,31 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
-	import { theme } from '$lib/theme.svelte.js';
+	import { theme } from '$lib/theme.svelte';
 
-	/** @type {HTMLCanvasElement | null} */
-	let canvasRef = $state(null);
+	let canvasRef = $state<HTMLCanvasElement | null>(null);
 
-	/**
-	 * @typedef {Object} SnowParticle
-	 * @property {number} x
-	 * @property {number} y
-	 * @property {number} vx
-	 * @property {number} vy
-	 * @property {number} radius
-	 * @property {number} swayPhase
-	 * @property {number} swaySpeed
-	 * @property {number} swayAmplitude
-	 * @property {number} opacity
-	 * @property {number} blurAmount
-	 * @property {boolean} hasShineBorder
-	 */
+	interface SnowParticle {
+		x: number;
+		y: number;
+		vx: number;
+		vy: number;
+		radius: number;
+		swayPhase: number;
+		swaySpeed: number;
+		swayAmplitude: number;
+		opacity: number;
+		blurAmount: number;
+		hasShineBorder: boolean;
+	}
 
-	/**
-	 * @typedef {Object} ClickImpulse
-	 * @property {number} x
-	 * @property {number} y
-	 * @property {number} startTime
-	 * @property {number} cps
-	 * @property {number} maxRadius
-	 * @property {number} strength
-	 */
+	interface ClickImpulse {
+		x: number;
+		y: number;
+		startTime: number;
+		cps: number;
+		maxRadius: number;
+		strength: number;
+	}
 
 	onMount(() => {
 		if (!canvasRef) return;
@@ -56,15 +53,10 @@
 		let mouseY = -9999;
 		let isMouseInside = false;
 
-		/** @type {number[]} */
-		let clickTimes = [];
-		/** @type {ClickImpulse[]} */
-		let clickImpulses = [];
+		let clickTimes: number[] = [];
+		let clickImpulses: ClickImpulse[] = [];
 
-		/**
-		 * @param {MouseEvent} e
-		 */
-		function handleMouseMove(e) {
+		function handleMouseMove(e: MouseEvent) {
 			mouseX = e.clientX;
 			mouseY = e.clientY;
 			isMouseInside = true;
@@ -76,10 +68,7 @@
 			mouseY = -9999;
 		}
 
-		/**
-		 * @param {MouseEvent} e
-		 */
-		function handleMouseDown(e) {
+		function handleMouseDown(e: MouseEvent) {
 			const now = performance.now();
 			clickTimes.push(now);
 			clickTimes = clickTimes.filter((t) => now - t <= 1000);
@@ -101,14 +90,9 @@
 
 		const particleCount = 75;
 
-		/**
-		 * @param {boolean} [initialRandom=false]
-		 * @returns {SnowParticle}
-		 */
-		function createSnowParticle(initialRandom = false) {
+		function createSnowParticle(initialRandom = false): SnowParticle {
 			const x = Math.random() * (width + 60) - 30;
 			const y = initialRandom ? Math.random() * (height + 40) - 20 : -15 - Math.random() * 30;
-
 			const depth = Math.random();
 			const radius = 1.6 + depth * 3.2;
 			const vy = 0.55 + depth * 0.95;
@@ -130,31 +114,22 @@
 			};
 		}
 
-		/** @type {SnowParticle[]} */
-		const particles = Array.from({ length: particleCount }, () => createSnowParticle(true));
+		const particles: SnowParticle[] = Array.from({ length: particleCount }, () => createSnowParticle(true));
 
 		let colorValue =
 			(typeof document !== 'undefined' && document.documentElement.classList.contains('dark')) ||
 			theme.current === 'dark'
 				? 255
 				: 0;
-		/** @type {number | undefined} */
-		let animFrameId;
+		let animFrameId: number | undefined;
 		let lastTime = performance.now();
 
-		/**
-		 * @param {CanvasRenderingContext2D} ctx
-		 * @param {SnowParticle} p
-		 * @param {number} colorVal
-		 */
-		function drawSnow(ctx, p, colorVal) {
+		function drawSnow(ctx: CanvasRenderingContext2D, p: SnowParticle, colorVal: number) {
 			const { x, y, radius, opacity, blurAmount, hasShineBorder } = p;
 
 			ctx.save();
-
 			ctx.shadowColor = `rgba(${colorVal}, ${colorVal}, ${colorVal}, ${opacity * 0.8})`;
 			ctx.shadowBlur = blurAmount;
-
 			ctx.fillStyle = `rgba(${colorVal}, ${colorVal}, ${colorVal}, ${opacity})`;
 			ctx.beginPath();
 			ctx.arc(x, y, radius, 0, Math.PI * 2);
@@ -169,16 +144,12 @@
 			ctx.restore();
 		}
 
-		/**
-		 * @param {number} now
-		 */
-		function render(now) {
+		function render(now: number) {
 			const dt = Math.min((now - lastTime) / 1000, 0.1);
 			lastTime = now;
 
 			clickTimes = clickTimes.filter((t) => now - t <= 1000);
 			const currentCPS = clickTimes.length;
-
 			clickImpulses = clickImpulses.filter((imp) => now - imp.startTime < 600);
 
 			const targetColor = theme.current === 'dark' ? 255 : 0;
@@ -189,7 +160,6 @@
 
 			for (let i = 0; i < particles.length; i++) {
 				const p = particles[i];
-
 				const sway = Math.sin(now * p.swaySpeed + p.swayPhase) * p.swayAmplitude;
 
 				p.x += (p.vx + sway) * (dt * 60);
