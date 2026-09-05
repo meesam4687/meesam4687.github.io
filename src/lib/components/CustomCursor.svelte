@@ -104,16 +104,36 @@
 		}
 
 		function checkHoverTarget(target: EventTarget | null): boolean {
-			return target instanceof Element && !!target.closest('a, button, [role="button"], input, textarea, select, .theme-toggle, .social-circle-btn');
+			return target instanceof Element && !!target.closest('a, button, [role="button"], input, textarea, select, .theme-toggle, .social-circle-btn, .osu-exit-btn');
 		}
 
 		function handleMouseOver(e: MouseEvent) {
 			isHovering = checkHoverTarget(e.target);
 		}
 
+		function handleKeyDown(e: KeyboardEvent) {
+			if (e.repeat || lockedIn || blownUp) return;
+			const key = e.key.toLowerCase();
+			if (key === 'x' || key === 'z') {
+				if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+				isClicking = true;
+			}
+		}
+
+		function handleKeyUp(e: KeyboardEvent) {
+			const key = e.key.toLowerCase();
+			if (key === 'x' || key === 'z') {
+				if (!isMouseDown) {
+					isClicking = false;
+				}
+			}
+		}
+
 		window.addEventListener('mousemove', handleMouseMove, { passive: true });
 		window.addEventListener('mousedown', handleMouseDown);
 		window.addEventListener('mouseup', handleMouseUp);
+		window.addEventListener('keydown', handleKeyDown);
+		window.addEventListener('keyup', handleKeyUp);
 		document.documentElement.addEventListener('mouseleave', handleMouseLeave);
 		document.documentElement.addEventListener('mouseenter', handleMouseEnter);
 		document.addEventListener('mouseover', handleMouseOver, { passive: true });
@@ -219,6 +239,8 @@
 			window.removeEventListener('mousemove', handleMouseMove);
 			window.removeEventListener('mousedown', handleMouseDown);
 			window.removeEventListener('mouseup', handleMouseUp);
+			window.removeEventListener('keydown', handleKeyDown);
+			window.removeEventListener('keyup', handleKeyUp);
 			document.documentElement.removeEventListener('mouseleave', handleMouseLeave);
 			document.documentElement.removeEventListener('mouseenter', handleMouseEnter);
 			document.removeEventListener('mouseover', handleMouseOver);

@@ -97,3 +97,14 @@ a {
 	background-color: var(--accent-primary);
 	color: #000000;
 }
+
+.navbar, .main-content {
+	transition: opacity 0.6s ease, filter 0.6s ease;
+}
+
+body.osu-mode .navbar,
+body.osu-mode .main-content {
+	opacity: 0 !important;
+	pointer-events: none !important;
+	filter: blur(4px);
+}
