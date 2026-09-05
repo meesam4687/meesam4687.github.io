@@ -756,46 +756,41 @@
 		align-items: center;
 		gap: 0.6rem;
 		padding: 0.65rem 1.15rem;
-		border-radius: 9999px;
-		background: var(--bg-card);
+		border-radius: 16px;
+		background-color: var(--toggle-bg);
 		color: var(--text-primary);
-		border: 1.5px solid var(--border-subtle);
-		box-shadow: var(--shadow-md), 0 0 15px rgba(149, 183, 237, 0.2);
+		border: none;
+		box-shadow: none;
 		font-family: var(--font-sans);
 		font-size: 0.88rem;
 		font-weight: 600;
 		cursor: pointer;
-		backdrop-filter: blur(10px);
-		-webkit-backdrop-filter: blur(10px);
-		transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+		transition: background-color 0.2s ease, transform 0.1s ease;
 		animation: osuBtnSlideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 		user-select: none;
 	}
 
 	.osu-exit-btn:hover {
-		transform: translateY(-2px) scale(1.03);
-		border-color: var(--accent-primary);
-		box-shadow: var(--shadow-lg), 0 0 20px rgba(149, 183, 237, 0.45);
+		background-color: var(--toggle-hover);
 	}
 
 	.osu-exit-btn:active {
-		transform: translateY(0) scale(0.96);
+		transform: scale(0.96);
 	}
 
 	.exit-icon {
 		font-size: 0.85rem;
 		font-weight: 700;
-		color: var(--accent-primary);
+		color: var(--text-secondary);
 	}
 
 	.exit-kbd {
 		font-family: var(--font-mono);
 		font-size: 0.7rem;
 		padding: 2px 6px;
-		border-radius: 5px;
-		background: var(--accent-subtle);
-		color: var(--accent-primary);
-		font-weight: 700;
+		border-radius: 6px;
+		background-color: var(--bg-card);
+		color: var(--text-muted);
 		border: 1px solid var(--border-subtle);
 		letter-spacing: 0.05em;
 	}
